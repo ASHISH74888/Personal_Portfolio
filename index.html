@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ashish Kumar Singh — Engineer's Field Notes</title>
+    <meta
+      name="description"
+      content="Ashish Kumar Singh — full-stack engineer. Field notes on building software, systems, and interfaces."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              // Editorial pairing: high-contrast serif display + warm text serif
+              // + a technical mono for kickers, numerals, and metadata.
+              display: ['Fraunces', 'Georgia', 'serif'],
+              serif: ['Newsreader', 'Georgia', 'serif'],
+              sans: ['Newsreader', 'Georgia', 'serif'],
+              mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+            },
+            colors: {
+              paper: '#f4efe6',        // warm cream canvas
+              'paper-raised': '#fbf8f1', // lifted panels
+              'paper-sunk': '#ebe3d4',   // recessed bands
+              ink: '#1c1a17',          // warm near-black
+              'ink-soft': '#5c5548',   // muted body text
+              'ink-faint': '#938b7c',  // metadata / captions
+              rust: '#b4462f',         // the single accent
+              'rust-deep': '#8f3520',
+              olive: '#6b6a3a',
+            },
+            letterSpacing: {
+              tightest: '-0.03em',
+            },
+            keyframes: {
+              'marquee-scroll': {
+                from: { transform: 'translateX(0)' },
+                to: { transform: 'translateX(-50%)' },
+              },
+            },
+            animation: {
+              marquee: 'marquee-scroll 40s linear infinite',
+            },
+          },
+        },
+      };
+    </script>
+    <script type="importmap">
+      {
+        "imports": {
+          "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+          "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+          "react/": "https://esm.sh/react@^19.2.3/",
+          "react": "https://esm.sh/react@^19.2.3",
+          "framer-motion": "https://esm.sh/framer-motion@^12.27.5"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

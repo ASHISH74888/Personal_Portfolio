@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//tmp/**)",
+      "Bash(cd /tmp)",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --hide-scrollbars --window-size=1440,6200 --screenshot=/tmp/full.png --virtual-time-budget=11000 \"http://localhost:5175/\")",
+      "Bash(cp /tmp/full.png \"c:/Users/Lenovo/Desktop/Portfolio/.preview.png\")"
+    ]
+  }
+}

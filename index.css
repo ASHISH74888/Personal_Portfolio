@@ -1,0 +1,435 @@
+/* ============================================================
+   Editorial / Print Design System
+   Ashish Kumar Singh — "An engineer's field notes"
+   ------------------------------------------------------------
+   Warm paper, ink type, one rust accent. No glass, no neon,
+   no glow. Typography and hairlines do the work.
+   ============================================================ */
+
+:root {
+  --paper: #f4efe6;
+  --paper-raised: #fbf8f1;
+  --paper-sunk: #ebe3d4;
+  --ink: #1c1a17;
+  --ink-soft: #5c5548;
+  --ink-faint: #938b7c;
+  --rust: #b4462f;
+  --rule: rgba(28, 26, 23, 0.14);
+  --rule-strong: rgba(28, 26, 23, 0.28);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 7rem;
+  background-color: var(--paper);
+  /* clip (not hidden) so horizontal overflow is contained WITHOUT
+     creating a scroll container that would break position: sticky. */
+  overflow-x: clip;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Optical niceties for the serifs */
+h1, h2, h3, h4 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-feature-settings: 'ss01' 1;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------- Paper grain (very subtle, multiply) ---------- */
+.paper-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+}
+
+/* Faint printer's registration texture on the whole page */
+.paper-texture {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(rgba(28, 26, 23, 0.025) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* ============================================================
+   SCROLLBARS — thin, ink
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper-sunk);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--rule-strong);
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink);
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================================
+   EDITORIAL PRIMITIVES
+   ============================================================ */
+
+/* Hairline rule */
+.rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  height: 0;
+}
+.rule-strong {
+  border-top: 1px solid var(--rule-strong);
+}
+
+/* Kicker: mono, uppercase, tracked — the technical counterpoint */
+.kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-faint);
+}
+
+/* Metadata label */
+.meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+
+/* Raised paper card — hairline, no blur, soft press shadow */
+.paper-card {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
+    0 18px 40px -32px rgba(28, 26, 23, 0.5);
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s ease,
+    box-shadow 0.5s ease;
+}
+.paper-card:hover {
+  border-color: var(--rule-strong);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
+    0 28px 55px -34px rgba(28, 26, 23, 0.55);
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Editorial hover underline — draws in from the left */
+.link-underline {
+  position: relative;
+  color: var(--ink);
+  text-decoration: none;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+}
+/* Reverse: starts underlined, retracts to the right on hover */
+.link-retract::after {
+  transform: scaleX(1);
+}
+.link-retract:hover::after {
+  transform-origin: right;
+  transform: scaleX(0);
+}
+
+/* Drop cap for the opening editorial paragraph */
+.dropcap::first-letter {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  float: left;
+  font-size: 4.6rem;
+  line-height: 0.78;
+  padding: 0.1em 0.12em 0 0;
+  color: var(--rust);
+}
+
+/* Duotone / editorial plate treatment for photos */
+.plate {
+  filter: grayscale(1) contrast(1.02);
+  transition: filter 0.8s ease;
+}
+.plate-warm {
+  filter: grayscale(0.65) sepia(0.25) contrast(1.02);
+}
+.group:hover .plate {
+  filter: grayscale(0) contrast(1);
+}
+
+/* Accent text */
+.text-rust { color: var(--rust); }
+
+/* Big editorial display numeral (folio) */
+.folio {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  color: var(--rule-strong);
+  line-height: 0.8;
+}
+
+/* ============================================================
+   HERO — modern editorial additions
+   ============================================================ */
+
+/* Live status pill — hairline, mono, a slow breathing dot */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: var(--paper-raised);
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.6) inset;
+}
+.status-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--rust);
+}
+.status-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 1px solid var(--rust);
+  animation: status-ping 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+@keyframes status-ping {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  70%, 100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Primary button — ink fill sweeps in from the left on hover */
+.btn-fill {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: color 0.4s ease;
+}
+.btn-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-fill:hover::before {
+  transform: scaleX(1);
+}
+
+/* Metric strip numerals — display serif */
+.metric-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Hand-drawn rust underline that strokes itself in */
+.underline-draw {
+  stroke: var(--rust);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 340;
+  stroke-dashoffset: 340;
+  animation: underline-stroke 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 1.15s;
+}
+@keyframes underline-stroke {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Faint modern guide grid behind the hero headline */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--rule) 1px, transparent 1px);
+  background-size: 6.5rem 100%;
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 78%);
+  mask-image: linear-gradient(to bottom, #000, transparent 78%);
+  opacity: 0.5;
+}
+
+/* Scroll cue — a slow travelling tick down a hairline */
+.scroll-cue {
+  position: relative;
+  width: 1px;
+  height: 46px;
+  background: var(--rule-strong);
+  overflow: hidden;
+}
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  width: 3px;
+  height: 14px;
+  background: var(--rust);
+  animation: scroll-cue-run 2s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+}
+@keyframes scroll-cue-run {
+  0% { top: -14px; }
+  100% { top: 46px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot::after,
+  .scroll-cue::after { animation: none !important; }
+  .underline-draw { animation: none !important; stroke-dashoffset: 0; }
+}
+
+/* ============================================================
+   CODE SPECIMEN (Fig. 01)
+   ============================================================ */
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.caret-blink {
+  animation: caret-blink 1s steps(1, end) infinite;
+}
+/* highlight the line that matters — rust tint + margin bar */
+.code-line-hl {
+  background: linear-gradient(
+    90deg,
+    rgba(180, 70, 47, 0.16),
+    rgba(180, 70, 47, 0) 85%
+  );
+  box-shadow: inset 2px 0 0 var(--rust);
+}
+
+/* ============================================================
+   REVEAL — line mask (set by framer via inline styles too)
+   ============================================================ */
+.reveal-mask {
+  overflow: hidden;
+  display: block;
+}
+
+/* ============================================================
+   MARQUEE (editorial ticker on a rule)
+   ============================================================ */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 45s linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover .marquee {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+/* ============================================================
+   FORM FIELDS — underline inputs, print style
+   ============================================================ */
+.field {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule-strong);
+  border-radius: 0;
+  padding: 0.6rem 0.1rem;
+  color: var(--ink);
+  font-family: 'Newsreader', serif;
+  font-size: 1.05rem;
+  transition: border-color 0.3s ease;
+}
+.field::placeholder {
+  color: var(--ink-faint);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--rust);
+}
+
+/* ============================================================
+   RESPONSIVE / MOTION PREFERENCES
+   ============================================================ */
+@media (max-width: 768px) {
+  body { font-size: 1rem; }
+  .dropcap::first-letter { font-size: 3.6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee { animation: none !important; }
+  html { scroll-behavior: auto; }
+}
