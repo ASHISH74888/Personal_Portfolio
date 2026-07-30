@@ -455,7 +455,7 @@ const Console: React.FC = () => {
       <div className="relative max-w-4xl mx-auto px-5 md:px-8">
         {/* header */}
         <div className="flex items-center gap-4 mb-8">
-          <span className="kicker text-rust">No.06</span>
+          <span className="kicker text-rust">No.01</span>
           <span className="h-px w-12 bg-paper/25" />
           <span className="kicker text-paper/60">The console</span>
         </div>

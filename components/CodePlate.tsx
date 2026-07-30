@@ -170,7 +170,7 @@ const SystemMap: React.FC<{ reduce: boolean }> = ({ reduce }) => {
                 rx={3}
                 style={{
                   fill: on
-                    ? "rgba(180,70,47,0.16)"
+                    ? "rgba(255,73,10,0.16)"
                     : "rgba(244,239,230,0.035)",
                   stroke: on ? "var(--rust)" : "rgba(244,239,230,0.2)",
                   strokeWidth: 1.2,

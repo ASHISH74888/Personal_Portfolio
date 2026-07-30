@@ -13,7 +13,10 @@
   --ink: #1c1a17;
   --ink-soft: #5c5548;
   --ink-faint: #938b7c;
-  --rust: #b4462f;
+  --rust: #ff490a;
+  --rust-deep: #cc3a08;
+  --amber: #b7791f;
+  --olive: #6b6a3a;
   --rule: rgba(28, 26, 23, 0.14);
   --rule-strong: rgba(28, 26, 23, 0.28);
 }
@@ -21,16 +24,16 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 7rem;
-  background-color: var(--paper);
+  background-color: #ffffff;
   /* clip (not hidden) so horizontal overflow is contained WITHOUT
      creating a scroll container that would break position: sticky. */
   overflow-x: clip;
 }
 
 body {
-  background-color: var(--paper);
+  background-color: #ffffff;
   color: var(--ink);
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: 'Nunito', system-ui, sans-serif;
   font-weight: 400;
   font-size: 1.0625rem;
   line-height: 1.65;
@@ -40,7 +43,7 @@ body {
 
 /* Optical niceties for the serifs */
 h1, h2, h3, h4 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Nunito', system-ui, sans-serif;
   font-feature-settings: 'ss01' 1;
   letter-spacing: -0.02em;
 }
@@ -186,7 +189,7 @@ h1, h2, h3, h4 {
 
 /* Drop cap for the opening editorial paragraph */
 .dropcap::first-letter {
-  font-family: 'Fraunces', serif;
+  font-family: 'Nunito', sans-serif;
   font-weight: 600;
   float: left;
   font-size: 4.6rem;
@@ -212,7 +215,7 @@ h1, h2, h3, h4 {
 
 /* Big editorial display numeral (folio) */
 .folio {
-  font-family: 'Fraunces', serif;
+  font-family: 'Nunito', sans-serif;
   font-weight: 400;
   color: var(--rule-strong);
   line-height: 0.8;
@@ -276,7 +279,7 @@ h1, h2, h3, h4 {
 
 /* Metric strip numerals — display serif */
 .metric-num {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Nunito', system-ui, sans-serif;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -352,8 +355,8 @@ h1, h2, h3, h4 {
 .code-line-hl {
   background: linear-gradient(
     90deg,
-    rgba(180, 70, 47, 0.16),
-    rgba(180, 70, 47, 0) 85%
+    rgba(255, 73, 10, 0.16),
+    rgba(255, 73, 10, 0) 85%
   );
   box-shadow: inset 2px 0 0 var(--rust);
 }
@@ -409,7 +412,7 @@ h1, h2, h3, h4 {
   border-radius: 0;
   padding: 0.6rem 0.1rem;
   color: var(--ink);
-  font-family: 'Newsreader', serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 1.05rem;
   transition: border-color 0.3s ease;
 }

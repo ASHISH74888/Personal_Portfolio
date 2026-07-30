@@ -4,13 +4,12 @@ import { Menu, X } from "lucide-react";
 import { PERSONAL_INFO } from "../constants";
 
 const LINKS = [
-  { label: "About", id: "about", no: "01" },
-  { label: "Approach", id: "approach", no: "02" },
+  { label: "Console", id: "console", no: "01" },
+  { label: "About", id: "about", no: "02" },
   { label: "Journey", id: "experience", no: "03" },
   { label: "Work", id: "projects", no: "04" },
   { label: "Skills", id: "skills", no: "05" },
-  { label: "Console", id: "console", no: "06" },
-  { label: "Contact", id: "contact", no: "07" },
+  { label: "Contact", id: "contact", no: "06" },
 ];
 
 const Navbar: React.FC = () => {

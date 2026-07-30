@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <script>
@@ -20,11 +20,11 @@
         theme: {
           extend: {
             fontFamily: {
-              // Editorial pairing: high-contrast serif display + warm text serif
-              // + a technical mono for kickers, numerals, and metadata.
-              display: ['Fraunces', 'Georgia', 'serif'],
-              serif: ['Newsreader', 'Georgia', 'serif'],
-              sans: ['Newsreader', 'Georgia', 'serif'],
+              // Rounded, friendly sans (Nunito) across display + body,
+              // with a technical mono for kickers, numerals, and metadata.
+              display: ['Nunito', 'system-ui', 'sans-serif'],
+              serif: ['Nunito', 'system-ui', 'sans-serif'],
+              sans: ['Nunito', 'system-ui', 'sans-serif'],
               mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
             },
             colors: {
@@ -34,9 +34,10 @@
               ink: '#1c1a17',          // warm near-black
               'ink-soft': '#5c5548',   // muted body text
               'ink-faint': '#938b7c',  // metadata / captions
-              rust: '#b4462f',         // the single accent
-              'rust-deep': '#8f3520',
-              olive: '#6b6a3a',
+              rust: '#ff490a',         // primary accent — vermilion
+              'rust-deep': '#cc3a08',  // accent hover / pressed
+              amber: '#b7791f',        // warm secondary accent
+              olive: '#6b6a3a',        // terminal $ / diff-add
             },
             letterSpacing: {
               tightest: '-0.03em',

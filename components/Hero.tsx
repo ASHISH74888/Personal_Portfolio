@@ -61,12 +61,12 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
       </motion.div>
 
       {/* Masthead rule + edition line */}
-      <motion.div
+      <motion.div 
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 1, ease: EASE, delay: 0.2 }}
         className="origin-left h-px bg-ink/25 mb-4"
-      />
+      /> 
       <div className="flex items-center justify-between gap-4 mb-12 md:mb-16">
         <motion.span
           initial={{ opacity: 0, y: 8 }}

@@ -32,7 +32,7 @@ const Contact: React.FC = () => {
   return (
     <Section id="contact">
       <SectionHeading
-        index="07"
+        index="06"
         kicker="Correspondence"
         title={
           <>
@@ -69,7 +69,7 @@ const Contact: React.FC = () => {
               </dd>
             </div>
 
-            <div className="border-t border-ink/15 pt-4">
+            {/* <div className="border-t border-ink/15 pt-4">
               <dt className="meta mb-2">Telephone</dt>
               <dd>
                 <a
@@ -79,7 +79,7 @@ const Contact: React.FC = () => {
                   {PERSONAL_INFO.phone}
                 </a>
               </dd>
-            </div>
+            </div> */}
 
             <div className="border-t border-ink/15 pt-4">
               <dt className="meta mb-2">Located</dt>

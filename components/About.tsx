@@ -36,7 +36,7 @@ const About: React.FC = () => {
   return (
     <Section id="about" className="relative">
       <SectionHeading
-        index="01"
+        index="02"
         kicker="About the engineer"
         title={
           <>
