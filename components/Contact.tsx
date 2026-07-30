@@ -60,6 +60,7 @@ const Contact: React.FC = () => {
                   {PERSONAL_INFO.email}
                 </a>
                 <button
+                
                   onClick={handleCopyEmail}
                   className="text-ink-faint hover:text-rust transition-colors"
                   aria-label="Copy email"
