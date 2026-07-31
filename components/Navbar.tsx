@@ -40,18 +40,17 @@ const Navbar: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  /* The page scroller is the root element (`html` sets overflow-x, which
-     stops body→viewport overflow propagation), so the lock has to go there
-     — `body { overflow: hidden }` would be a no-op. */
-  const unlockScroll = () => {
-    document.documentElement.style.overflow = "";
-  };
+  /* While the mobile sheet is open: close on Escape, and close if the
+     viewport grows into the desktop layout.
 
-  /* While the mobile sheet is open: freeze the page behind it, close on
-     Escape, and close if the viewport grows into the desktop layout. */
+     Deliberately NOT locking page scroll here. Freezing it means setting
+     `overflow: hidden` on the scrolling root (`html`), and the nav links
+     request a *smooth* scroll in the same tick they close the menu — an
+     async animation that Chrome drops because it still sees the root as
+     unscrollable. The sheet's own `overscroll-contain` stops scroll
+     chaining, which is the behaviour actually worth having. */
   useEffect(() => {
     if (!open) return;
-    document.documentElement.style.overflow = "hidden";
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
@@ -62,7 +61,6 @@ const Navbar: React.FC = () => {
     window.addEventListener("keydown", onKey);
     window.addEventListener("resize", onResize);
     return () => {
-      unlockScroll();
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", onResize);
     };
@@ -70,9 +68,6 @@ const Navbar: React.FC = () => {
 
   const scrollTo = (id: string) => {
     setOpen(false);
-    // Release the lock now, not on effect cleanup: scrollIntoView below runs
-    // in this same tick and would be a no-op against a locked root.
-    unlockScroll();
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -92,7 +87,6 @@ const Navbar: React.FC = () => {
         <button
           onClick={() => {
             setOpen(false);
-            unlockScroll();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
           className="flex items-baseline gap-2.5 group min-w-0"
@@ -139,20 +133,28 @@ const Navbar: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu.
+
+          Fades and slides — deliberately NOT animating `height: auto`. To
+          resolve an auto-height keyframe framer-motion has to measure the
+          element, and it does that by suspending the page scroll and then
+          restoring it with window.scrollTo(0, suspendedScrollY). That landed
+          ~13ms after a link's smooth scrollIntoView and cancelled it, so
+          tapping a nav item closed the sheet and went nowhere. */}
       <AnimatePresence>
         {open && (
           <motion.div
+            key="mobile-menu"
             id="mobile-menu"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             className="md:hidden overflow-hidden bg-paper border-t border-ink/12"
           >
             {/* Capped and scrollable: the sheet still works in phone
                 landscape, where six links exceed the viewport height. */}
-            <div className="px-page pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] flex flex-col max-h-[calc(100dvh-3.5rem)] overflow-y-auto">
+            <div className="px-page pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] flex flex-col max-h-[calc(100dvh-3.5rem)] overflow-y-auto overscroll-contain">
               {LINKS.map((link) => (
                 <button
                   key={link.id}
