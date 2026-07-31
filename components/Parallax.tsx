@@ -7,6 +7,7 @@ import {
   useReducedMotion,
   MotionValue,
 } from "framer-motion";
+import { useIsDesktop } from "./useMediaQuery";
 
 /* ============================================================
    Parallax primitives — scroll-driven depth
@@ -17,7 +18,9 @@ import {
    through the viewport (offset start-end -> end-start) so the
    motion is tied to the element itself, not the whole page.
 
-   Everything here respects prefers-reduced-motion.
+   Everything here respects prefers-reduced-motion, and depth is only
+   applied from `md` up: on a phone the columns are stacked and full-width,
+   so drifting layers buy nothing and cost scroll smoothness.
    ============================================================ */
 
 type Direction = "up" | "down" | "left" | "right";
@@ -51,6 +54,7 @@ export const Parallax: React.FC<ParallaxProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const isDesktop = useIsDesktop();
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -72,8 +76,15 @@ export const Parallax: React.FC<ParallaxProps> = ({
   const smoothed = useSpring(raw, SPRING);
   const value = smooth ? smoothed : raw;
 
-  if (reduce) {
-    return <div className={className}>{children}</div>;
+  // The ref MUST stay attached even when we opt out of the motion, because
+  // useScroll above is already tracking it — a defined-but-unmounted target
+  // makes framer-motion throw ("Target ref is defined but not hydrated").
+  if (reduce || !isDesktop) {
+    return (
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+    );
   }
 
   return (
@@ -103,6 +114,8 @@ export const ParallaxImage: React.FC<{
 }> = ({ src, alt, className = "", intensity = 0.2 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const isDesktop = useIsDesktop();
+  const still = reduce || !isDesktop;
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -119,17 +132,19 @@ export const ParallaxImage: React.FC<{
 
   // Grow the picture vertically (height 100%+overscan, pulled up by half the
   // overscan so it's centered) so there's room to travel inside the frame.
-  const imgStyle: React.CSSProperties = {
-    height: `${100 + pct}%`,
-    top: `${-pct / 2}%`,
-  };
+  // When it isn't going to travel, it fills the frame exactly instead.
+  const imgStyle: React.CSSProperties = still
+    ? { height: "100%", top: 0 }
+    : { height: `${100 + pct}%`, top: `${-pct / 2}%` };
 
   return (
     <div ref={ref} className="absolute inset-0 overflow-hidden">
       <motion.img
         src={src}
         alt={alt}
-        style={reduce ? imgStyle : { ...imgStyle, y: smoothY }}
+        loading="lazy"
+        decoding="async"
+        style={still ? imgStyle : { ...imgStyle, y: smoothY }}
         className={`absolute left-0 w-full object-cover ${className}`}
       />
     </div>

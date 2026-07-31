@@ -47,7 +47,7 @@ const TabBtn: React.FC<{
 }> = ({ id, active, onClick, badge, children }) => (
   <button
     onClick={() => onClick(id)}
-    className={`flex items-center gap-2 whitespace-nowrap px-3.5 py-2 border-r border-paper/12 transition-colors ${
+    className={`flex shrink-0 items-center gap-1.5 sm:gap-2 whitespace-nowrap px-3 sm:px-3.5 py-2.5 sm:py-2 border-r border-paper/12 transition-colors ${
       active === id
         ? "bg-paper/[0.05] text-paper/85"
         : "text-paper/35 hover:text-paper/60"
@@ -63,7 +63,7 @@ const Row: React.FC<{ n: number; children: React.ReactNode }> = ({
   n,
   children,
 }) => (
-  <div className="grid grid-cols-[2rem_1fr] gap-3">
+  <div className="grid grid-cols-[1.5rem_1fr] sm:grid-cols-[2rem_1fr] gap-2 sm:gap-3">
     <span className="text-right text-paper/20 select-none">{n}</span>
     <span className="whitespace-pre-wrap break-words">{children}</span>
   </div>
@@ -75,12 +75,12 @@ const Skills: React.FC = () => {
   return (
     <>
       {/* Marquee band sits full-width above the section */}
-      <div className="max-w-6xl mx-auto px-5 md:px-8 pt-8">
-        <p className="kicker text-center mb-5">Tools of the trade</p>
+      <div className="px-page max-w-6xl 2xl:max-w-7xl mx-auto pt-8">
+        <p className="kicker text-center mb-4 sm:mb-5">Tools of the trade</p>
         <TechMarquee />
       </div>
 
-      <Section id="skills" className="!pt-16">
+      <Section id="skills" className="!pt-12 sm:!pt-16">
         <SectionHeading
           index="05"
           kicker="Capabilities & honours"
@@ -92,22 +92,22 @@ const Skills: React.FC = () => {
           }
         />
 
-        <FadeUp delay={0.1} className="mt-14">
+        <FadeUp delay={0.1} className="mt-10 sm:mt-14">
           <div className="relative border border-ink/25 bg-ink text-paper/90 shadow-[0_40px_70px_-46px_rgba(28,26,23,0.9)]">
             {/* top hairline sheen */}
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-paper/15" />
 
             {/* title bar */}
-            <div className="flex items-center justify-between px-4 py-2.5 border-b border-paper/12">
-              <span className="flex items-center gap-2">
+            <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 border-b border-paper/12">
+              <span className="flex shrink-0 items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
                 <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
                 <span className="h-2.5 w-2.5 rounded-full bg-rust/70" />
               </span>
-              <span className="font-mono text-[11px] tracking-wide text-paper/45">
+              <span className="hidden xs:block min-w-0 truncate font-mono text-[10px] sm:text-[11px] tracking-wide text-paper/45">
                 ashish@field-notes: ~/stack
               </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-paper/40">
+              <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.22em] text-paper/40">
                 main
               </span>
             </div>
@@ -141,7 +141,7 @@ const Skills: React.FC = () => {
             </div>
 
             {/* body */}
-            <div className="relative min-h-[20rem]">
+            <div className="relative min-h-[17rem] sm:min-h-[20rem]">
               <AnimatePresence mode="wait">
                 {tab === "stack" && (
                   <motion.pre
@@ -150,7 +150,7 @@ const Skills: React.FC = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="px-4 md:px-7 py-6 font-mono text-[11.5px] md:text-[13px] leading-[1.9]"
+                    className="px-3 sm:px-5 md:px-7 py-5 sm:py-6 font-mono text-[11px] xs:text-[11.5px] md:text-[13px] leading-[1.9]"
                   >
                     <Row n={1}>
                       <span className="text-paper/35">
@@ -196,7 +196,7 @@ const Skills: React.FC = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="px-4 md:px-7 py-6 font-mono text-[11.5px] md:text-[13px] leading-[1.9]"
+                    className="px-3 sm:px-5 md:px-7 py-5 sm:py-6 font-mono text-[11px] xs:text-[11.5px] md:text-[13px] leading-[1.9]"
                   >
                     <p className="mb-5 text-paper/45">
                       <span className="text-olive">$</span>{" "}
@@ -223,13 +223,13 @@ const Skills: React.FC = () => {
             </div>
 
             {/* status bar */}
-            <div className="flex items-center justify-between gap-3 px-4 md:px-7 py-2 border-t border-paper/12 font-mono text-[10px] text-paper/45 whitespace-nowrap overflow-hidden">
+            <div className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-5 md:px-7 py-2 border-t border-paper/12 font-mono text-[9.5px] xs:text-[10px] text-paper/45 whitespace-nowrap overflow-hidden">
               {tab === "stack" ? (
                 <>
                   <span className="flex items-center gap-1.5 shrink-0">
                     <span className="text-rust">◈</span> {SKILLS.length} domains
                   </span>
-                  <span className="text-paper/70">
+                  <span className="truncate text-paper/70">
                     {totalSkills} skills · type-checked
                   </span>
                 </>
@@ -238,7 +238,7 @@ const Skills: React.FC = () => {
                   <span className="flex items-center gap-1.5 shrink-0">
                     <span className="text-rust">↑</span> main
                   </span>
-                  <span className="text-paper/70">
+                  <span className="truncate text-paper/70">
                     {ACHIEVEMENTS.length} milestones logged
                   </span>
                 </>

@@ -46,11 +46,11 @@ const About: React.FC = () => {
         }
       />
 
-      <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-12 md:gap-20 mt-14">
+      <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-10 sm:gap-12 md:gap-14 lg:gap-20 mt-10 sm:mt-14">
         {/* Narrative */}
-        <div className="max-w-xl">
+        <div className="max-w-xl min-w-0">
           <FadeUp>
-            <p className="text-lg text-ink-soft leading-relaxed mb-6">
+            <p className="lede text-ink-soft mb-6">
               My work has never been about syntax. It began with one question —
               how do we build systems that handle millions of requests without
               blinking? — and it turned into a craft: the architecture of
@@ -58,7 +58,7 @@ const About: React.FC = () => {
             </p>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <p className="text-lg text-ink-soft leading-relaxed mb-6">
+            <p className="lede text-ink-soft mb-6">
               As a full-stack engineer I focus on backend performance and
               scalable architecture. Today, at{" "}
               <span className="text-ink font-medium">Praan.inc</span>, I build a
@@ -74,7 +74,7 @@ const About: React.FC = () => {
             </p>
           </FadeUp>
           <FadeUp delay={0.15}>
-            <p className="text-lg text-ink-soft leading-relaxed">
+            <p className="lede text-ink-soft">
               I'm at home in the complexity of distributed systems and the
               craft of the interface alike. Whether it's making a MongoDB query
               run four times faster or setting type on a page, I bring the same
@@ -83,11 +83,11 @@ const About: React.FC = () => {
           </FadeUp>
 
           {/* Stats ledger */}
-          <div className="mt-12 grid grid-cols-3 border-t border-ink/15 pt-8">
+          <div className="mt-10 sm:mt-12 grid grid-cols-3 gap-x-2 border-t border-ink/15 pt-7 sm:pt-8">
             {STATS.map((s, i) => (
               <FadeUp key={s.label} delay={0.1 + i * 0.08}>
-                <div className="pr-4">
-                  <div className="font-display text-4xl md:text-5xl font-medium text-ink leading-none">
+                <div className="pr-2 sm:pr-4">
+                  <div className="font-display text-[1.75rem] xs:text-3xl sm:text-4xl md:text-5xl font-medium text-ink leading-none">
                     {s.value}
                   </div>
                   <div className="meta mt-2 leading-snug">{s.label}</div>
@@ -102,12 +102,12 @@ const About: React.FC = () => {
           <ul className="border-t border-ink/15">
             {CAPABILITIES.map((c, i) => (
               <FadeUp key={c.no} delay={i * 0.08}>
-                <li className="group flex gap-6 py-6 border-b border-ink/15">
-                  <span className="folio text-3xl w-8 shrink-0 text-rust/70">
+                <li className="group flex gap-4 sm:gap-6 py-5 sm:py-6 border-b border-ink/15">
+                  <span className="folio text-2xl sm:text-3xl w-6 sm:w-8 shrink-0 text-rust/70">
                     {c.no}
                   </span>
-                  <div>
-                    <h3 className="font-display text-2xl font-medium text-ink mb-1 group-hover:text-rust transition-colors">
+                  <div className="min-w-0">
+                    <h3 className="font-display text-xl sm:text-2xl font-medium text-ink mb-1 group-hover:text-rust transition-colors">
                       {c.title}
                     </h3>
                     <p className="text-ink-soft leading-relaxed">{c.desc}</p>

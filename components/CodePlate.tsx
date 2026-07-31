@@ -6,6 +6,7 @@ import {
   useSpring,
   useReducedMotion,
 } from "framer-motion";
+import { useHasFinePointer } from "./useMediaQuery";
 
 /* ============================================================
    Fig. 01 — the code specimen (interactive)
@@ -119,8 +120,12 @@ const SystemMap: React.FC<{ reduce: boolean }> = ({ reduce }) => {
   }, [reduce]);
 
   return (
-    <div className="px-4 py-4">
-      <svg viewBox="0 0 360 182" className="w-full h-auto">
+    <div className="px-3 sm:px-4 py-4">
+      <svg
+        viewBox="0 0 360 182"
+        className="w-full h-auto"
+        preserveAspectRatio="xMidYMid meet"
+      >
         <defs>
           <marker
             id="cp-arrow"
@@ -248,13 +253,15 @@ const CodePlate: React.FC = () => {
     };
   }, [reduce, tab, done, total]);
 
-  // subtle cursor tilt
+  // subtle cursor tilt — pointer-driven, so it only applies where there's
+  // a real pointer and room for the perspective to read.
+  const tiltable = useHasFinePointer();
   const rx = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
   const ry = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
   const wrapRef = useRef<HTMLDivElement>(null);
 
   const onMove = (e: React.MouseEvent) => {
-    if (reduce) return;
+    if (reduce || !tiltable) return;
     const el = wrapRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -294,7 +301,7 @@ const CodePlate: React.FC = () => {
   }> = ({ id, badge, children, dot }) => (
     <button
       onClick={() => setTab(id)}
-      className={`flex items-center gap-2 whitespace-nowrap px-3.5 py-2 border-r border-paper/12 transition-colors ${
+      className={`flex shrink-0 items-center gap-1.5 sm:gap-2 whitespace-nowrap px-3 sm:px-3.5 py-2.5 sm:py-2 border-r border-paper/12 transition-colors ${
         tab === id
           ? "bg-paper/[0.05] text-paper/85"
           : "text-paper/35 hover:text-paper/60"
@@ -318,16 +325,16 @@ const CodePlate: React.FC = () => {
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-paper/15" />
 
       {/* title bar — same window chrome as the Method terminal */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-paper/12">
-        <span className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 border-b border-paper/12">
+        <span className="flex shrink-0 items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
           <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
           <span className="h-2.5 w-2.5 rounded-full bg-rust/70" />
         </span>
-        <span className="font-mono text-[11px] tracking-wide text-paper/45">
+        <span className="hidden xs:block min-w-0 truncate font-mono text-[10px] sm:text-[11px] tracking-wide text-paper/45">
           ashish@bolt: ~/sync
         </span>
-        <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-paper/55">
+        <span className="flex shrink-0 items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-paper/55">
           <span className="h-1.5 w-1.5 rounded-full bg-rust animate-pulse" />
           live
         </span>
@@ -369,7 +376,7 @@ const CodePlate: React.FC = () => {
       </div>
 
       {/* body */}
-      <div className="relative min-h-[15.5rem]">
+      <div className="relative min-h-[13.5rem] xs:min-h-[15.5rem]">
         <AnimatePresence mode="wait">
           {tab === "consumer" && (
             <motion.pre
@@ -378,8 +385,11 @@ const CodePlate: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="px-4 py-4 font-mono text-[11.5px] md:text-xs leading-[1.8] overflow-hidden"
+              className="code-scroll py-4 font-mono text-[11px] xs:text-[11.5px] md:text-xs leading-[1.8]"
             >
+              {/* Rows are `w-max min-w-full` so long lines can be swiped
+                  sideways on a phone instead of being cut off, while the
+                  highlight band still spans the full width. */}
               {LINES.map((line, li) => {
                 const rowChars = renderChars(line);
                 const nlIdx = gi++;
@@ -387,7 +397,7 @@ const CodePlate: React.FC = () => {
                 return (
                   <div
                     key={li}
-                    className={`grid grid-cols-[1.6rem_1fr] gap-3 whitespace-pre -mx-4 px-4 ${
+                    className={`grid w-max min-w-full grid-cols-[1.6rem_1fr] gap-3 whitespace-pre px-3 sm:px-4 ${
                       li === HL_LINE ? "code-line-hl" : ""
                     }`}
                   >
@@ -411,7 +421,7 @@ const CodePlate: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="px-4 py-4 font-mono text-[11.5px] md:text-xs leading-[1.8] overflow-hidden"
+              className="px-3 sm:px-4 py-4 font-mono text-[11px] xs:text-[11.5px] md:text-xs leading-[1.8] overflow-hidden"
             >
               {DIFF.map((d, i) => {
                 const gutter =
@@ -441,7 +451,7 @@ const CodePlate: React.FC = () => {
                 return (
                   <div
                     key={i}
-                    className={`grid grid-cols-[1.1rem_1fr] gap-2 whitespace-pre -mx-4 px-4 ${rowCls}`}
+                    className={`grid grid-cols-[1.1rem_1fr] gap-2 -mx-3 sm:-mx-4 px-3 sm:px-4 ${rowCls}`}
                   >
                     <span className={`text-right select-none ${gutterCls}`}>
                       {gutter}
@@ -468,7 +478,7 @@ const CodePlate: React.FC = () => {
       </div>
 
       {/* status bar — single row, adapts to the active tab */}
-      <div className="flex items-center justify-between gap-3 px-4 py-2 border-t border-paper/12 font-mono text-[10px] text-paper/45 whitespace-nowrap overflow-hidden">
+      <div className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2 border-t border-paper/12 font-mono text-[9.5px] xs:text-[10px] text-paper/45 whitespace-nowrap overflow-hidden">
         {tab === "consumer" && (
           <>
             <span className="flex items-center gap-1.5 shrink-0">

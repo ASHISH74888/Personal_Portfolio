@@ -23,11 +23,18 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 7rem;
+  scroll-padding-top: 5rem;
   background-color: #ffffff;
   /* clip (not hidden) so horizontal overflow is contained WITHOUT
      creating a scroll container that would break position: sticky. */
   overflow-x: clip;
+  /* Stop iOS Safari inflating type when the phone is rotated. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (min-width: 768px) {
+  html { scroll-padding-top: 7rem; }
 }
 
 body {
@@ -35,10 +42,23 @@ body {
   color: var(--ink);
   font-family: 'Nunito', system-ui, sans-serif;
   font-weight: 400;
-  font-size: 1.0625rem;
+  /* Fluid body copy: 16px on a 320px phone → 18px on a large desktop. */
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Long URLs / hashes must never widen the page on a narrow screen.
+     (Horizontal overflow itself is contained by `html`, above — doing it
+     here too risks clipping the fixed navbar.) */
+  overflow-wrap: break-word;
+}
+
+/* Media never overflows its column, whatever the screen. */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
 /* Optical niceties for the serifs */
@@ -105,22 +125,35 @@ h1, h2, h3, h4 {
   border-top: 1px solid var(--rule-strong);
 }
 
-/* Kicker: mono, uppercase, tracked — the technical counterpoint */
+/* Kicker: mono, uppercase, tracked — the technical counterpoint.
+   Tracking is expensive in width, so it tightens on small screens. */
 .kicker {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.18em;
   color: var(--ink-faint);
+}
+@media (min-width: 640px) {
+  .kicker {
+    font-size: 0.7rem;
+    letter-spacing: 0.28em;
+  }
 }
 
 /* Metadata label */
 .meta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
   color: var(--ink-faint);
+}
+@media (min-width: 640px) {
+  .meta {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+  }
 }
 
 /* Raised paper card — hairline, no blur, soft press shadow */
@@ -135,14 +168,18 @@ h1, h2, h3, h4 {
     border-color 0.5s ease,
     box-shadow 0.5s ease;
 }
-.paper-card:hover {
-  border-color: var(--rule-strong);
-  box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
-    0 28px 55px -34px rgba(28, 26, 23, 0.55);
-}
-.card-lift:hover {
-  transform: translateY(-4px);
+/* Hover affordances only where a real pointer exists — on touch screens a
+   sticky :hover state reads as a bug. */
+@media (hover: hover) and (pointer: fine) {
+  .paper-card:hover {
+    border-color: var(--rule-strong);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
+      0 28px 55px -34px rgba(28, 26, 23, 0.55);
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+  }
 }
 
 /* Editorial hover underline — draws in from the left */
@@ -163,16 +200,18 @@ h1, h2, h3, h4 {
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.link-underline:hover::after {
-  transform: scaleX(1);
-}
 /* Reverse: starts underlined, retracts to the right on hover */
 .link-retract::after {
   transform: scaleX(1);
 }
-.link-retract:hover::after {
-  transform-origin: right;
-  transform: scaleX(0);
+@media (hover: hover) and (pointer: fine) {
+  .link-underline:hover::after {
+    transform: scaleX(1);
+  }
+  .link-retract:hover::after {
+    transform-origin: right;
+    transform: scaleX(0);
+  }
 }
 
 /* Duotone / editorial plate treatment for photos */
@@ -183,8 +222,16 @@ h1, h2, h3, h4 {
 .plate-warm {
   filter: grayscale(0.65) sepia(0.25) contrast(1.02);
 }
-.group:hover .plate {
-  filter: grayscale(0) contrast(1);
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .plate {
+    filter: grayscale(0) contrast(1);
+  }
+}
+/* Touch devices get no hover, so show the photographs in full colour. */
+@media (hover: none) {
+  .plate {
+    filter: grayscale(0.15) contrast(1.01);
+  }
 }
 
 /* Accent text */
@@ -250,8 +297,19 @@ h1, h2, h3, h4 {
   transform-origin: left;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.btn-fill:hover::before {
-  transform: scaleX(1);
+@media (hover: hover) and (pointer: fine) {
+  .btn-fill:hover::before {
+    transform: scaleX(1);
+  }
+}
+/* On touch, the fill confirms the press instead of a hover. */
+@media (hover: none) {
+  .btn-fill:active::before {
+    transform: scaleX(1);
+  }
+  .btn-fill:active {
+    color: var(--paper);
+  }
 }
 
 /* Metric strip numerals — display serif */
@@ -326,8 +384,10 @@ h1, h2, h3, h4 {
   animation: marquee-scroll 45s linear infinite;
   will-change: transform;
 }
-.marquee-track:hover .marquee {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .marquee-track:hover .marquee {
+    animation-play-state: paused;
+  }
 }
 @keyframes marquee-scroll {
   from { transform: translateX(0); }
@@ -361,7 +421,9 @@ h1, h2, h3, h4 {
   padding: 0.6rem 0.1rem;
   color: var(--ink);
   font-family: 'Nunito', sans-serif;
+  /* Must stay >= 16px: anything smaller makes iOS Safari zoom on focus. */
   font-size: 1.05rem;
+  min-height: 2.875rem; /* 46px — comfortable touch target */
   transition: border-color 0.3s ease;
 }
 .field::placeholder {
@@ -373,13 +435,103 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================================
-   RESPONSIVE / MOTION PREFERENCES
+   RESPONSIVE LAYOUT PRIMITIVES
+   ------------------------------------------------------------
+   Two ideas do most of the work:
+     · .px-page  — one page gutter, notch-aware, used everywhere
+                   so every section lines up at every width.
+     · .display-*— fluid type scales, so headlines grow smoothly
+                   instead of jumping at breakpoints.
    ============================================================ */
-@media (max-width: 768px) {
-  body { font-size: 1rem; }
+
+/* ---------- Page gutter (respects notches in landscape) ---------- */
+.px-page {
+  padding-left: max(1.125rem, env(safe-area-inset-left));
+  padding-right: max(1.125rem, env(safe-area-inset-right));
+}
+@media (min-width: 640px) {
+  .px-page {
+    padding-left: max(1.75rem, env(safe-area-inset-left));
+    padding-right: max(1.75rem, env(safe-area-inset-right));
+  }
+}
+@media (min-width: 768px) {
+  .px-page {
+    padding-left: max(2rem, env(safe-area-inset-left));
+    padding-right: max(2rem, env(safe-area-inset-right));
+  }
 }
 
+/* Home-indicator clearance is applied per element with an explicit
+   `pb-[calc(<base>+env(safe-area-inset-bottom))]`, so it adds to that
+   element's own padding instead of replacing it. */
+
+/* ---------- Fluid display type ---------- */
+/* Hero headline: 33px @320 → 36px @375 → 48px @640 → 60px @900+ */
+.display-xl {
+  font-size: clamp(2.05rem, 1.18rem + 4.6vw, 3.75rem);
+  line-height: 1.03;
+  letter-spacing: -0.02em;
+}
+/* Section headlines: 30px on phones → 54px on desktop */
+.display-lg {
+  font-size: clamp(1.9rem, 1.15rem + 3.9vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+/* Card / commit titles: 22px → 36px */
+.display-md {
+  font-size: clamp(1.375rem, 0.95rem + 2.2vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+/* Standfirst paragraph under a headline */
+.lede {
+  font-size: clamp(1.0625rem, 1rem + 0.5vw, 1.25rem);
+  line-height: 1.6;
+}
+
+/* ---------- Terminal / editor windows ---------- */
+/* Scrollable console body: tall enough to read, never taller than the
+   screen — including phone landscape, where height is the scarce axis. */
+.term-body {
+  height: 26rem; /* fallback for browsers without clamp/svh */
+  height: clamp(16rem, 60vh, 30rem);
+  height: clamp(16rem, 60svh, 30rem);
+  overscroll-behavior: contain; /* don't scroll the page at the ends */
+  -webkit-overflow-scrolling: touch;
+}
+@media (orientation: landscape) and (max-height: 560px) {
+  .term-body { height: 15rem; }
+}
+
+/* Code listings scroll sideways instead of being clipped or squashed. */
+.code-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.code-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+.code-scroll::-webkit-scrollbar-thumb {
+  background: rgba(244, 239, 230, 0.25);
+}
+
+/* ---------- Larger screens ---------- */
+/* On very wide monitors the measure grows a little rather than leaving the
+   type marooned in the middle of the viewport. */
+@media (min-width: 1920px) {
+  body { font-size: 1.1875rem; }
+}
+
+/* ============================================================
+   MOTION PREFERENCES
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   .marquee { animation: none !important; }
   html { scroll-behavior: auto; }
+  .paper-card,
+  .card-lift:hover { transform: none !important; }
 }

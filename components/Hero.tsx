@@ -33,7 +33,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
   return (
     <header
       ref={heroRef}
-      className="relative max-w-6xl mx-auto px-5 md:px-8 pt-28 md:pt-32 pb-16"
+      className="relative px-page max-w-6xl 2xl:max-w-7xl mx-auto pt-24 xs:pt-28 md:pt-32 pb-12 sm:pb-16"
     >
       {/* Corner registration ticks */}
       <Tick className="left-4 top-24 md:left-7 md:top-28 hidden sm:block" />
@@ -44,15 +44,15 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.1 }}
-        className="marquee-track marquee-mask overflow-hidden border-y border-ink/15 mb-10 md:mb-12"
+        className="marquee-track marquee-mask overflow-hidden border-y border-ink/15 mb-8 sm:mb-10 md:mb-12"
       >
-        <div className="marquee py-2.5">
+        <div className="marquee py-2 sm:py-2.5">
           {[0, 1].map((k) => (
             <div key={k} className="flex items-center">
               {TICKER.map((t, i) => (
                 <span key={i} className="flex items-center">
                   <span className="meta whitespace-nowrap uppercase">{t}</span>
-                  <span className="text-rust mx-5">✳</span>
+                  <span className="text-rust mx-3.5 sm:mx-5">✳</span>
                 </span>
               ))}
             </div>
@@ -84,13 +84,17 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
         </span>
       </div> */}
 
-      <div className="relative grid lg:grid-cols-[1.35fr_0.65fr] gap-12 lg:gap-16 lg:items-center">
+      {/* `minmax(0,…)` on both tracks is load-bearing: an `fr`/`auto` track
+          floors at min-content, and the SVG diagram inside the code plate
+          contributes its 360px viewBox width — which would stop the whole
+          page shrinking below ~397px on small phones. */}
+      <div className="relative grid grid-cols-[minmax(0,1fr)] gap-10 sm:gap-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-14 xl:gap-16 lg:items-center">
         {/* Headline column */}
-        <div className="relative">
+        <div className="relative min-w-0">
           {/* Shell-prompt tag — bridges the editorial headline with the
               coder identity used across the rest of the site */}
           <Reveal delay={0.1}>
-            <span className="inline-flex items-center gap-2 font-mono text-[11px] md:text-xs text-ink-faint mb-6">
+            <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[10.5px] xs:text-[11px] md:text-xs text-ink-faint mb-5 sm:mb-6">
               <span className="text-rust">$</span>
               <span className="text-ink-soft">whoami</span>
               <span className="text-ink-faint">
@@ -100,7 +104,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
             </span>
           </Reveal>
 
-          <h1 className="font-display font-medium text-ink leading-[1.02] tracking-tightest text-4xl sm:text-5xl md:text-6xl">
+          <h1 className="display-xl font-display font-medium text-ink">
             <Reveal delay={0.2}>
               <span className="block">Building</span>
             </Reveal>
@@ -116,7 +120,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.7 }}
-            className="mt-8 max-w-xl text-lg md:text-xl text-ink-soft leading-relaxed"
+            className="lede mt-6 sm:mt-8 max-w-xl text-ink-soft"
           >
             A full-stack engineer working close to the metal — event-driven
             systems, sharp backends, and interfaces built with the same care
@@ -130,10 +134,10 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE, delay: 0.5 }}
-            className="group relative w-full"
+            className="group relative w-full min-w-0"
           >
             <CodePlate />
-            <figcaption className="flex items-center justify-between mt-3">
+            <figcaption className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mt-3">
               <span className="meta">Fig. 01 — the log-sync pipeline</span>
               <span className="meta">in production</span>
             </figcaption>
@@ -146,7 +150,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.9, delay: 0.9 }}
-        className="mt-12 md:mt-16 flex flex-wrap items-center gap-x-6 gap-y-4"
+        className="mt-10 sm:mt-12 md:mt-16 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-4"
       >
         <a
           href="#projects"
@@ -156,7 +160,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
               .getElementById("projects")
               ?.scrollIntoView({ behavior: "smooth" });
           }}
-          className="btn-fill group inline-flex items-center gap-2 border border-ink px-7 py-3.5 text-ink hover:text-paper"
+          className="btn-fill group inline-flex items-center justify-center gap-2 border border-ink px-6 sm:px-7 py-3.5 text-ink hover:text-paper sm:w-auto"
         >
           View selected work
           <ArrowDownRight
@@ -172,7 +176,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
               .getElementById("console")
               ?.scrollIntoView({ behavior: "smooth" });
           }}
-          className="group inline-flex items-center gap-2 px-2 py-3.5 text-ink link-underline"
+          className="group inline-flex items-center justify-center sm:justify-start gap-2 px-2 py-3 sm:py-3.5 text-ink link-underline"
         >
           Try the console
           <ArrowUpRight
@@ -187,7 +191,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.9, delay: 1 }}
-        className="mt-8 flex items-center gap-5"
+        className="mt-7 sm:mt-8 flex flex-wrap items-center gap-x-5 gap-y-2"
       >
         {PERSONAL_INFO.socials.map((s) => (
           <a
@@ -195,7 +199,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
             href={s.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="link-underline meta uppercase text-ink-soft"
+            className="link-underline meta uppercase text-ink-soft py-1"
           >
             {s.name}
           </a>

@@ -72,17 +72,15 @@ export const SectionHeading: React.FC<{
   <div className={`${align === "center" ? "text-center" : ""} ${className}`}>
     <FadeUp y={16}>
       <div
-        className={`flex items-center gap-4 mb-7 ${
+        className={`flex items-center gap-3 sm:gap-4 mb-5 sm:mb-7 ${
           align === "center" ? "justify-center" : ""
         }`}
       >
-        <span className="kicker text-rust">No.{index}</span>
-        <span className="h-px w-12 bg-ink/25" />
+        <span className="kicker text-rust whitespace-nowrap">No.{index}</span>
+        <span className="h-px w-8 sm:w-12 shrink-0 bg-ink/25" />
         <span className="kicker">{kicker}</span>
       </div>
     </FadeUp>
-    <h2 className="font-display text-4xl md:text-[3.4rem] leading-[1.02] font-medium text-ink">
-      {title}
-    </h2>
+    <h2 className="display-lg font-display font-medium text-ink">{title}</h2>
   </div>
 );

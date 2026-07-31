@@ -68,7 +68,7 @@ const CommitRow: React.FC<{
   const current = active === i;
   return (
     <FadeUp delay={i * 0.06} y={20}>
-      <li className="relative grid grid-cols-[auto_1fr] gap-x-5 md:gap-x-8">
+      <li className="relative grid grid-cols-[auto_1fr] gap-x-4 sm:gap-x-5 md:gap-x-8">
         {/* graph column — node + connector */}
         <div className="relative flex flex-col items-center">
           <span
@@ -92,16 +92,16 @@ const CommitRow: React.FC<{
         </div>
 
         {/* commit body */}
-        <div className={last ? "pb-2" : "pb-12 md:pb-14"}>
+        <div className={`min-w-0 ${last ? "pb-2" : "pb-10 sm:pb-12 md:pb-14"}`}>
           {/* hash + refs + date line */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3">
-            <span className="font-mono text-[13px] text-rust">
+          <div className="flex flex-wrap items-center gap-x-2.5 sm:gap-x-3 gap-y-2 mb-3">
+            <span className="font-mono text-[12px] sm:text-[13px] text-rust">
               commit {node.hash}
             </span>
             {node.refs?.map((r) => (
               <span
                 key={r}
-                className="font-mono text-[10px] uppercase tracking-wide rounded-full border border-rust/40 text-rust px-2 py-0.5"
+                className="font-mono text-[9.5px] sm:text-[10px] uppercase tracking-wide rounded-full border border-rust/40 text-rust px-2 py-0.5"
               >
                 {r}
               </span>
@@ -112,21 +112,21 @@ const CommitRow: React.FC<{
           </div>
 
           {/* title */}
-          <h3 className="font-display font-semibold text-paper leading-[1.05] tracking-tight text-2xl md:text-4xl">
+          <h3 className="display-md font-display font-semibold text-paper">
             {node.title}
             <span className="text-rust">.</span>
           </h3>
-          <p className="mt-2 font-mono text-xs md:text-sm text-paper/45 lowercase tracking-wide">
+          <p className="mt-2 font-mono text-[11px] sm:text-xs md:text-sm text-paper/45 lowercase tracking-wide">
             {node.subtitle}
           </p>
 
           {/* points */}
           {node.points && (
-            <ul className="mt-5 space-y-2.5 max-w-2xl">
+            <ul className="mt-4 sm:mt-5 space-y-2.5 max-w-2xl">
               {node.points.map((p, k) => (
                 <li
                   key={k}
-                  className="flex gap-3 text-[15px] leading-relaxed text-paper/65"
+                  className="flex gap-2.5 sm:gap-3 text-[14px] sm:text-[15px] leading-relaxed text-paper/65"
                 >
                   <span className="mt-[0.7em] h-1 w-1 shrink-0 rounded-full bg-rust/70" />
                   <span>{p}</span>
@@ -137,7 +137,7 @@ const CommitRow: React.FC<{
 
           {/* chips */}
           {node.chips && node.chips.length > 0 && (
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-5 sm:mt-6 flex flex-wrap gap-2">
               {node.chips.map((c) => (
                 <span
                   key={c}
@@ -183,39 +183,40 @@ const GitTerminal: React.FC<{
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-paper/15" />
 
       {/* title bar */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-paper/12">
-        <span className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 border-b border-paper/12">
+        <span className="flex shrink-0 items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
           <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
           <span className="h-2.5 w-2.5 rounded-full bg-rust/70" />
         </span>
-        <span className="font-mono text-[11px] tracking-wide text-paper/45">
+        <span className="hidden xs:block min-w-0 truncate font-mono text-[10px] sm:text-[11px] tracking-wide text-paper/45">
           ashish@field-notes: {path}
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-paper/40">
+        <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.22em] text-paper/40">
           main
         </span>
       </div>
 
       {/* command prompt */}
-      <div className="px-5 md:px-7 pt-6 pb-2 font-mono text-xs md:text-sm">
+      <div className="px-4 sm:px-5 md:px-7 pt-5 sm:pt-6 pb-2 font-mono text-[11px] sm:text-xs md:text-sm">
         <span className="text-olive">$</span>{" "}
         <span className="text-paper/80">{command}</span>{" "}
         <span className="text-paper/45">{flags}</span>
       </div>
 
-      {/* the graph */}
-      <div ref={railRef} className="relative px-5 md:px-7 pb-8 pt-6">
+      {/* the graph — the rail offset tracks the padding at each breakpoint
+          so it stays centred under the 14px commit nodes. */}
+      <div ref={railRef} className="relative px-4 sm:px-5 md:px-7 pb-8 pt-6">
         {/* base rail */}
         <span
           aria-hidden
-          className="absolute top-8 bottom-10 left-[calc(1.25rem+6px)] md:left-[calc(1.75rem+6px)] w-px bg-paper/15"
+          className="absolute top-8 bottom-10 left-[calc(1rem+7px)] sm:left-[calc(1.25rem+7px)] md:left-[calc(1.75rem+7px)] w-px bg-paper/15"
         />
         {/* rust fill rail */}
         <motion.span
           aria-hidden
           style={{ scaleY: reduce ? 1 : fill }}
-          className="absolute top-8 bottom-10 left-[calc(1.25rem+6px)] md:left-[calc(1.75rem+6px)] w-px bg-rust origin-top"
+          className="absolute top-8 bottom-10 left-[calc(1rem+7px)] sm:left-[calc(1.25rem+7px)] md:left-[calc(1.75rem+7px)] w-px bg-rust origin-top"
         />
 
         <ul className="relative">
@@ -232,7 +233,7 @@ const GitTerminal: React.FC<{
       </div>
 
       {/* status footer */}
-      <div className="flex items-center justify-between gap-4 px-5 md:px-7 py-3 border-t border-paper/12 font-mono text-[10px] text-paper/45">
+      <div className="flex items-center justify-between gap-3 px-4 sm:px-5 md:px-7 py-2.5 sm:py-3 border-t border-paper/12 font-mono text-[10px] text-paper/45">
         <span className="flex items-center gap-1.5">
           <span className="text-rust">↑</span> {footer}
         </span>
@@ -248,7 +249,7 @@ const Experience: React.FC = () => {
   return (
     <section
       id="experience"
-      className="relative bg-ink text-paper py-28 md:py-36 overflow-hidden"
+      className="relative bg-ink text-paper py-20 sm:py-28 md:py-36 overflow-hidden"
     >
       {/* faint terminal grid wash */}
       <div
@@ -261,16 +262,16 @@ const Experience: React.FC = () => {
         }}
       />
 
-      <div className="relative max-w-4xl mx-auto px-5 md:px-8">
+      <div className="relative px-page max-w-4xl 2xl:max-w-5xl mx-auto">
         {/* header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
           <span className="kicker text-rust">No.03</span>
-          <span className="h-px w-12 bg-paper/25" />
+          <span className="h-px w-8 sm:w-12 bg-paper/25" />
           <span className="kicker text-paper/60">Curriculum vitae</span>
         </div>
 
         <FadeUp>
-          <h2 className="font-display text-4xl md:text-[3.4rem] leading-[1.02] font-medium text-paper mb-12">
+          <h2 className="display-lg font-display font-medium text-paper mb-10 sm:mb-12">
             The journey{" "}
             <span className="font-normal text-rust">so far.</span>
           </h2>
@@ -288,7 +289,7 @@ const Experience: React.FC = () => {
         </FadeUp>
 
         {/* Education terminal */}
-        <FadeUp delay={0.1} className="mt-12">
+        <FadeUp delay={0.1} className="mt-10 sm:mt-12">
           <GitTerminal
             path="~/education"
             command="git log"

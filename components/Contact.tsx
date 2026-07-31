@@ -41,28 +41,29 @@ const Contact: React.FC = () => {
         }
       />
 
-      <div className="grid lg:grid-cols-2 gap-14 md:gap-24 mt-14 items-start">
+      <div className="grid lg:grid-cols-2 gap-12 sm:gap-14 lg:gap-20 xl:gap-24 mt-10 sm:mt-14 items-start">
         {/* Details */}
         <FadeUp>
-          <p className="text-lg text-ink-soft leading-relaxed max-w-md mb-12">
+          <p className="lede text-ink-soft max-w-md mb-10 sm:mb-12">
             Have a project in mind, a role to fill, or just want to compare
             notes on distributed systems? The line is open.
           </p>
 
-          <dl className="space-y-8">
+          <dl className="space-y-7 sm:space-y-8">
             <div className="border-t border-ink/15 pt-4">
               <dt className="meta mb-2">Email</dt>
-              <dd className="flex items-center gap-3">
+              {/* `break-all` + `min-w-0`: a 24-character address must wrap
+                  rather than push the copy button off a 320px screen. */}
+              <dd className="flex items-start gap-2 sm:gap-3">
                 <a
                   href={`mailto:${PERSONAL_INFO.email}`}
-                  className="link-underline font-display text-xl md:text-2xl text-ink"
+                  className="link-underline min-w-0 break-all font-display text-lg xs:text-xl md:text-2xl text-ink"
                 >
                   {PERSONAL_INFO.email}
                 </a>
                 <button
-                
                   onClick={handleCopyEmail}
-                  className="text-ink-faint hover:text-rust transition-colors"
+                  className="-mr-2 -mt-1.5 grid h-10 w-10 shrink-0 place-items-center text-ink-faint hover:text-rust transition-colors"
                   aria-label="Copy email"
                 >
                   {isCopied ? <Check size={16} /> : <Copy size={16} />}
@@ -84,21 +85,21 @@ const Contact: React.FC = () => {
 
             <div className="border-t border-ink/15 pt-4">
               <dt className="meta mb-2">Located</dt>
-              <dd className="font-display text-xl md:text-2xl text-ink">
+              <dd className="font-display text-lg xs:text-xl md:text-2xl text-ink">
                 {PERSONAL_INFO.location}
               </dd>
             </div>
 
             <div className="border-t border-ink/15 pt-4">
               <dt className="meta mb-3">Elsewhere</dt>
-              <dd className="flex flex-wrap gap-x-6 gap-y-2">
+              <dd className="flex flex-wrap gap-x-6 gap-y-1">
                 {PERSONAL_INFO.socials.map((social) => (
                   <a
                     key={social.name}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="link-underline text-ink-soft"
+                    className="link-underline py-1 text-ink-soft"
                   >
                     {social.name}
                   </a>
@@ -110,7 +111,7 @@ const Contact: React.FC = () => {
 
         {/* Form */}
         <FadeUp delay={0.12}>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-7 sm:gap-8">
             <div className="flex flex-col gap-2">
               <label htmlFor="name" className="meta">
                 Your name
@@ -119,6 +120,7 @@ const Contact: React.FC = () => {
                 type="text"
                 id="name"
                 required
+                autoComplete="name"
                 value={formState.name}
                 onChange={(e) =>
                   setFormState({ ...formState, name: e.target.value })
@@ -136,6 +138,9 @@ const Contact: React.FC = () => {
                 type="email"
                 id="email"
                 required
+                autoComplete="email"
+                inputMode="email"
+                autoCapitalize="none"
                 value={formState.email}
                 onChange={(e) =>
                   setFormState({ ...formState, email: e.target.value })
@@ -165,7 +170,7 @@ const Contact: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group self-start inline-flex items-center gap-2 border border-ink px-7 py-3 text-ink hover:bg-ink hover:text-paper transition-colors duration-300 disabled:opacity-60"
+              className="group inline-flex w-full sm:w-auto sm:self-start items-center justify-center gap-2 border border-ink px-7 py-3.5 sm:py-3 text-ink hover:bg-ink hover:text-paper transition-colors duration-300 disabled:opacity-60"
             >
               {isSubmitting ? "Sending…" : "Send message"}
               {!isSubmitting && (

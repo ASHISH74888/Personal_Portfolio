@@ -15,7 +15,7 @@ const Section: React.FC<SectionProps> = ({ children, id, className = "" }) => {
     <section
       id={id}
       ref={ref}
-      className={`py-24 md:py-32 px-5 md:px-8 max-w-6xl mx-auto ${className}`}
+      className={`px-page py-20 sm:py-24 md:py-32 max-w-6xl 2xl:max-w-7xl mx-auto ${className}`}
     >
       <motion.div
         initial={{ opacity: 0, y: 28 }}

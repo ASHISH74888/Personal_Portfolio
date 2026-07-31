@@ -88,6 +88,17 @@ const P: React.FC<{ children: React.ReactNode; c?: string }> = ({
   c = "text-paper/70",
 }) => <div className={`${c} leading-relaxed`}>{children}</div>;
 
+/* The shell prompt. `visitor@ashish.dev` is a luxury on a 320px screen, so
+   below `sm` it collapses to `~ $` and leaves the width for the command. */
+const Prompt: React.FC = () => (
+  <>
+    <span className="hidden sm:inline text-olive">visitor@ashish.dev</span>
+    <span className="hidden sm:inline text-paper/40">:</span>
+    <span className="text-rust">~</span>
+    <span className="text-paper/40">$</span>
+  </>
+);
+
 const Console: React.FC = () => {
   const boot: Line[] = useMemo(
     () => [
@@ -99,9 +110,9 @@ const Console: React.FC = () => {
               ashish@dev · interactive shell{" "}
               <span className="text-paper/40">v1.0</span>
             </div>
-            <div className="text-paper/30">
-              ─────────────────────────────────────
-            </div>
+            {/* A rule rather than a run of box-drawing characters, so it
+                can never push the terminal wider than the screen. */}
+            <div className="my-1.5 h-px w-full max-w-[22rem] bg-paper/25" />
             <div>
               You found the terminal. Type{" "}
               <span className="text-rust">help</span> to look around.
@@ -149,11 +160,8 @@ const Console: React.FC = () => {
     // echo the prompt line
     push(
       <div className="flex items-center gap-2">
-        <span className="text-olive">visitor@ashish.dev</span>
-        <span className="text-paper/40">:</span>
-        <span className="text-rust">~</span>
-        <span className="text-paper/40">$</span>
-        <span className="text-paper">{raw}</span>
+        <Prompt />
+        <span className="text-paper break-all">{raw}</span>
       </div>,
     );
     if (cmd) {
@@ -169,7 +177,7 @@ const Console: React.FC = () => {
 
       case "help":
         push(
-          <div className="grid grid-cols-[7.5rem_1fr] gap-x-4 gap-y-1">
+          <div className="grid grid-cols-[5rem_1fr] xs:grid-cols-[6rem_1fr] sm:grid-cols-[7.5rem_1fr] gap-x-3 sm:gap-x-4 gap-y-1.5 sm:gap-y-1">
             {COMMANDS.map(([name, desc]) => (
               <React.Fragment key={name}>
                 <span className="text-rust">{name}</span>
@@ -183,7 +191,7 @@ const Console: React.FC = () => {
       case "whoami":
       case "about":
         push(
-          <div className="border-l-2 border-rust/50 pl-4 space-y-1.5">
+          <div className="border-l-2 border-rust/50 pl-3 sm:pl-4 space-y-1.5">
             <P c="text-paper">{PERSONAL_INFO.name} — Software Engineer</P>
             <P>{PERSONAL_INFO.summary}</P>
             <P c="text-paper/40">📍 {PERSONAL_INFO.location}</P>
@@ -210,7 +218,7 @@ const Console: React.FC = () => {
         push(
           <div className="space-y-3">
             {PROJECTS.map((p) => (
-              <div key={p.name} className="border-l-2 border-paper/15 pl-4">
+              <div key={p.name} className="border-l-2 border-paper/15 pl-3 sm:pl-4">
                 <div className="text-paper">
                   <span className="text-rust">▸</span> {p.name}{" "}
                   <span className="text-paper/40">· {p.role}</span>
@@ -229,7 +237,7 @@ const Console: React.FC = () => {
         push(
           <div className="space-y-3">
             {EXPERIENCE.map((e) => (
-              <div key={e.company} className="border-l-2 border-paper/15 pl-4">
+              <div key={e.company} className="border-l-2 border-paper/15 pl-3 sm:pl-4">
                 <div className="text-paper">
                   <span className="text-rust">{e.role}</span> @ {e.company}
                 </div>
@@ -247,30 +255,32 @@ const Console: React.FC = () => {
       case "hire":
       case "socials":
         push(
-          <div className="space-y-1">
-            <P>
-              <span className="text-rust w-16 inline-block">email</span>
+          /* Label above the value on phones, side by side from `sm` up —
+             long URLs then wrap instead of overflowing the terminal. */
+          <div className="space-y-2 sm:space-y-1">
+            <div className="flex flex-col sm:flex-row sm:gap-2">
+              <span className="text-rust shrink-0 sm:w-14">email</span>
               <a
                 href={`mailto:${PERSONAL_INFO.email}`}
-                className="text-paper underline decoration-paper/30 hover:decoration-rust"
+                className="text-paper break-all underline decoration-paper/30 hover:decoration-rust"
               >
                 {PERSONAL_INFO.email}
               </a>
-            </P>
+            </div>
             {PERSONAL_INFO.socials.map((s) => (
-              <P key={s.name}>
-                <span className="text-rust w-16 inline-block lowercase">
+              <div key={s.name} className="flex flex-col sm:flex-row sm:gap-2">
+                <span className="text-rust shrink-0 lowercase sm:w-14">
                   {s.name}
                 </span>
                 <a
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-paper underline decoration-paper/30 hover:decoration-rust"
+                  className="text-paper break-all underline decoration-paper/30 hover:decoration-rust"
                 >
                   {s.url.replace(/^https?:\/\//, "").slice(0, 42)}…
                 </a>
-              </P>
+              </div>
             ))}
           </div>,
         );
@@ -439,7 +449,7 @@ const Console: React.FC = () => {
   return (
     <section
       id="console"
-      className="relative bg-ink text-paper py-28 md:py-36 overflow-hidden"
+      className="relative bg-ink text-paper py-20 sm:py-28 md:py-36 overflow-hidden"
     >
       {/* faint terminal grid wash */}
       <div
@@ -452,11 +462,11 @@ const Console: React.FC = () => {
         }}
       />
 
-      <div className="relative max-w-4xl mx-auto px-5 md:px-8">
+      <div className="relative px-page max-w-4xl 2xl:max-w-5xl mx-auto">
         {/* header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
           <span className="kicker text-rust">No.01</span>
-          <span className="h-px w-12 bg-paper/25" />
+          <span className="h-px w-8 sm:w-12 bg-paper/25" />
           <span className="kicker text-paper/60">The console</span>
         </div>
 
@@ -465,7 +475,7 @@ const Console: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.8, ease: EASE }}
-          className="font-display text-4xl md:text-[3.4rem] leading-[1.02] font-medium text-paper mb-4"
+          className="display-lg font-display font-medium text-paper mb-4"
         >
           Now it's <span className="font-normal text-rust">my</span>{" "}
           turn to interview you.
@@ -475,7 +485,7 @@ const Console: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.15 }}
-          className="text-paper/55 max-w-xl mb-10"
+          className="text-paper/55 max-w-xl mb-8 sm:mb-10"
         >
           A real shell. Poke around, or run{" "}
           <span className="font-mono text-rust">bigo</span> and let me quiz you
@@ -493,16 +503,16 @@ const Console: React.FC = () => {
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-paper/15" />
 
           {/* title bar */}
-          <div className="flex items-center justify-between px-4 py-2.5 border-b border-paper/12">
-            <span className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 border-b border-paper/12">
+            <span className="flex shrink-0 items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
               <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
               <span className="h-2.5 w-2.5 rounded-full bg-rust/70" />
             </span>
-            <span className="font-mono text-[11px] tracking-wide text-paper/45">
+            <span className="hidden xs:block min-w-0 truncate font-mono text-[10px] sm:text-[11px] tracking-wide text-paper/45">
               visitor@ashish.dev: ~ — bash
             </span>
-            <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-paper/55">
+            <span className="flex shrink-0 items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-paper/55">
               <span className="h-1.5 w-1.5 rounded-full bg-rust animate-pulse" />
               live
             </span>
@@ -512,7 +522,7 @@ const Console: React.FC = () => {
           <div
             ref={bodyRef}
             onClick={() => !gameOn && inputRef.current?.focus()}
-            className="custom-scrollbar h-[26rem] md:h-[30rem] overflow-y-auto px-4 md:px-6 py-4 font-mono text-[12.5px] md:text-[13px] leading-relaxed cursor-text"
+            className="custom-scrollbar term-body overflow-y-auto px-3 sm:px-4 md:px-6 py-4 font-mono text-[12px] xs:text-[12.5px] md:text-[13px] leading-relaxed cursor-text"
           >
             {/* history */}
             <div className="space-y-2">
@@ -523,24 +533,31 @@ const Console: React.FC = () => {
 
             {/* live game panel */}
             {gameOn && (
-              <div className="mt-4 border border-paper/15 bg-paper/[0.03] p-4">
-                <div className="flex items-center justify-between mb-3">
+              <div className="mt-4 border border-paper/15 bg-paper/[0.03] p-3 sm:p-4">
+                <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 mb-3">
                   <span className="text-rust text-[11px] uppercase tracking-wider">
                     bigo · question {qi + 1}/{QN}
                   </span>
-                  <span className="text-paper/45 text-[11px]">
-                    score {score} · press q to quit
+                  <span className="flex items-center gap-2 text-paper/45 text-[11px]">
+                    score {score}
+                    {/* Tappable quit: there's no `q` key on a phone. */}
+                    <button
+                      onClick={quitGame}
+                      className="border border-paper/20 px-2 py-0.5 text-paper/60 hover:border-rust hover:text-paper transition-colors"
+                    >
+                      quit<span className="hidden sm:inline"> (q)</span>
+                    </button>
                   </span>
                 </div>
 
                 <div className="text-paper/50 mb-2">
                   {"// what's the time complexity?"}
                 </div>
-                <pre className="bg-ink/60 border border-paper/10 p-3 text-paper/90 overflow-x-auto whitespace-pre">
+                <pre className="code-scroll bg-ink/60 border border-paper/10 p-2.5 sm:p-3 text-paper/90 whitespace-pre text-[11px] xs:text-[12px] md:text-[13px]">
                   {q.code}
                 </pre>
 
-                <div className="mt-3 grid sm:grid-cols-2 gap-2">
+                <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {q.options.map((opt, i) => {
                     const isCorrect = i === q.answer;
                     const state = !answered
@@ -555,7 +572,7 @@ const Console: React.FC = () => {
                         key={opt}
                         onClick={() => answer(i)}
                         disabled={answered}
-                        className={`flex items-center gap-2 border px-3 py-2 text-left transition-colors ${
+                        className={`flex min-h-[2.75rem] items-center gap-2 border px-3 py-2 text-left transition-colors ${
                           state === "idle"
                             ? "border-paper/15 hover:border-rust hover:bg-rust/10 text-paper/85"
                             : state === "correct"
@@ -590,23 +607,23 @@ const Console: React.FC = () => {
                     <span className="text-paper/55">{q.why}</span>
                     <button
                       onClick={next}
-                      className="ml-auto border border-paper/20 px-3 py-1 text-paper/80 hover:border-rust hover:text-paper transition-colors"
+                      className="w-full sm:w-auto sm:ml-auto min-h-[2.5rem] border border-paper/20 px-3 py-1 text-paper/80 hover:border-rust hover:text-paper transition-colors"
                     >
-                      {qi + 1 < QN ? "next → (n)" : "finish → (n)"}
+                      {qi + 1 < QN ? "next →" : "finish →"}
+                      <span className="hidden sm:inline"> (n)</span>
                     </button>
                   </div>
                 )}
               </div>
             )}
 
-            {/* prompt (hidden during game) */}
+            {/* prompt (hidden during game). The whole row is 16px on phones:
+                anything smaller makes iOS Safari zoom the page on focus, and
+                the caret is measured in `ch`, so it must share the row's size. */}
             {!gameOn && (
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-olive">visitor@ashish.dev</span>
-                <span className="text-paper/40">:</span>
-                <span className="text-rust">~</span>
-                <span className="text-paper/40">$</span>
-                <div className="relative flex-1">
+              <div className="flex items-center gap-2 mt-2 text-[16px] sm:text-[13px]">
+                <Prompt />
+                <div className="relative flex-1 min-w-0">
                   <input
                     ref={inputRef}
                     value={input}
@@ -614,6 +631,8 @@ const Console: React.FC = () => {
                     onKeyDown={onKeyDown}
                     spellCheck={false}
                     autoComplete="off"
+                    autoCapitalize="none"
+                    autoCorrect="off"
                     aria-label="terminal input"
                     className="w-full bg-transparent outline-none text-paper caret-transparent"
                   />
@@ -627,8 +646,12 @@ const Console: React.FC = () => {
           </div>
 
           {/* status footer */}
-          <div className="flex items-center justify-between gap-4 px-4 md:px-6 py-2.5 border-t border-paper/12 font-mono text-[10px] text-paper/45">
-            <span>
+          <div className="flex items-center justify-between gap-3 px-3 sm:px-4 md:px-6 py-2.5 border-t border-paper/12 font-mono text-[10px] text-paper/45">
+            {/* On phones there's no hardware keyboard — point at the chips. */}
+            <span className="sm:hidden">
+              tap a <span className="text-rust">$</span> command below
+            </span>
+            <span className="hidden sm:inline">
               <span className="text-rust">↑↓</span> history ·{" "}
               <span className="text-rust">tab</span> complete
             </span>
@@ -639,7 +662,7 @@ const Console: React.FC = () => {
         </motion.div>
 
         {/* quick-run chips (great on mobile) */}
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-4 sm:mt-5 flex flex-wrap gap-2">
           {["bigo", "whoami", "skills", "projects", "contact"].map((cmd) => (
             <button
               key={cmd}
@@ -647,7 +670,7 @@ const Console: React.FC = () => {
                 run(cmd);
                 inputRef.current?.focus();
               }}
-              className="font-mono text-[11px] text-paper/60 border border-paper/15 px-3 py-1.5 hover:border-rust hover:text-paper transition-colors"
+              className="font-mono text-[11px] text-paper/60 border border-paper/15 px-3 py-2 sm:py-1.5 hover:border-rust hover:text-paper transition-colors"
             >
               <span className="text-rust/70 mr-1.5">$</span>
               {cmd}
