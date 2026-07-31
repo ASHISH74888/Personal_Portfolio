@@ -1,7 +1,6 @@
 import React from "react";
 import Section from "./Section";
 import { SectionHeading, FadeUp } from "./Editorial";
-import { Parallax } from "./Parallax";
 
 const CAPABILITIES = [
   {
@@ -97,8 +96,9 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Capabilities — an indexed list, drifting gently */}
-        <Parallax speed={0.1}>
+        {/* Capabilities — an indexed list. Tracks the scroll 1:1; drifting it
+            made the page feel like it moved faster than the wheel. */}
+        <div>
           <ul className="border-t border-ink/15">
             {CAPABILITIES.map((c, i) => (
               <FadeUp key={c.no} delay={i * 0.08}>
@@ -116,7 +116,7 @@ const About: React.FC = () => {
               </FadeUp>
             ))}
           </ul>
-        </Parallax>
+        </div>
       </div>
     </Section>
   );

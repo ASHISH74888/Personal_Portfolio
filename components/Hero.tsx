@@ -2,7 +2,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import { PERSONAL_INFO } from "../constants";
 import { Reveal } from "./Editorial";
-import { Parallax } from "./Parallax";
 import CodePlate from "./CodePlate";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 
@@ -52,7 +51,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
               {TICKER.map((t, i) => (
                 <span key={i} className="flex items-center">
                   <span className="meta whitespace-nowrap uppercase">{t}</span>
-                  <span className="text-rust mx-3.5 sm:mx-5">✳</span>
+                  <span className="mark-lozenge mx-3.5 sm:mx-5" aria-hidden />
                 </span>
               ))}
             </div>
@@ -128,21 +127,21 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
           </motion.p>
         </div>
 
-        {/* Fig. 01 — code specimen plate */}
-        <Parallax speed={0.08}>
-          <motion.figure
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: EASE, delay: 0.5 }}
-            className="group relative w-full min-w-0"
-          >
-            <CodePlate />
-            <figcaption className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mt-3">
-              <span className="meta">Fig. 01 — the log-sync pipeline</span>
-              <span className="meta">in production</span>
-            </figcaption>
-          </motion.figure>
-        </Parallax>
+        {/* Fig. 01 — code specimen plate.
+            No scroll parallax on the plate: drifting a content block against
+            the scroll makes the page read as moving faster than the wheel. */}
+        <motion.figure
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: EASE, delay: 0.5 }}
+          className="group relative w-full min-w-0"
+        >
+          <CodePlate />
+          <figcaption className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mt-3">
+            <span className="meta">Fig. 01 — the log-sync pipeline</span>
+            <span className="meta">in production</span>
+          </figcaption>
+        </motion.figure>
       </div>
 
       {/* CTAs + socials — full width, below the headline and figure */}

@@ -24,9 +24,9 @@ export const useMediaQuery = (query: string): boolean => {
   return matches;
 };
 
-/** Tablet-and-up: the width where depth effects have room to breathe. */
+/**
+ * Tablet-and-up: the width where depth effects have room to breathe. Width is
+ * deliberately the signal here — hover/pointer media queries describe only the
+ * primary pointer and misreport on hybrid machines.
+ */
 export const useIsDesktop = () => useMediaQuery("(min-width: 768px)");
-
-/** A real, hoverable pointer — mouse or trackpad, not a finger. */
-export const useHasFinePointer = () =>
-  useMediaQuery("(hover: hover) and (pointer: fine)");

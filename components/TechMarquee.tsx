@@ -26,7 +26,7 @@ const TechMarquee: React.FC = () => {
             <span className="font-display text-xl xs:text-2xl md:text-3xl font-medium text-ink px-4 sm:px-6">
               {item}
             </span>
-            <span className="text-rust text-base sm:text-lg">✳</span>
+            <span className="mark-lozenge mark-lozenge-lg" aria-hidden />
           </span>
         ))}
       </div>

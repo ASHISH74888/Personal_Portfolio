@@ -6,7 +6,6 @@ import {
   useSpring,
   useReducedMotion,
 } from "framer-motion";
-import { useHasFinePointer } from "./useMediaQuery";
 
 /* ============================================================
    Fig. 01 — the code specimen (interactive)
@@ -253,15 +252,15 @@ const CodePlate: React.FC = () => {
     };
   }, [reduce, tab, done, total]);
 
-  // subtle cursor tilt — pointer-driven, so it only applies where there's
-  // a real pointer and room for the perspective to read.
-  const tiltable = useHasFinePointer();
+  // Subtle cursor tilt. No pointer media query gating it: onMouseMove only
+  // fires for a real pointer anyway, and those queries misreport on hybrid
+  // machines — which would just disable the tilt on a normal laptop.
   const rx = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
   const ry = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
   const wrapRef = useRef<HTMLDivElement>(null);
 
   const onMove = (e: React.MouseEvent) => {
-    if (reduce || !tiltable) return;
+    if (reduce) return;
     const el = wrapRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
