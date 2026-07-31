@@ -272,7 +272,7 @@ const Experience: React.FC = () => {
         <FadeUp>
           <h2 className="font-display text-4xl md:text-[3.4rem] leading-[1.02] font-medium text-paper mb-12">
             The journey{" "}
-            <span className="italic font-normal text-rust">so far.</span>
+            <span className="font-normal text-rust">so far.</span>
           </h2>
         </FadeUp>
 

@@ -30,7 +30,7 @@ const ProjectEntry: React.FC<{
         {/* Text */}
         <div className={flip ? "md:order-1" : ""}>
           <div className="flex items-baseline gap-4 mb-4">
-            <span className="folio text-5xl md:text-6xl italic">
+            <span className="folio text-5xl md:text-6xl">
               0{index + 1}
             </span>
             <span className="meta">{project.period}</span>
@@ -86,7 +86,7 @@ const Projects: React.FC = () => {
         kicker="Selected work"
         title={
           <>
-            Things I've <span className="italic font-normal text-rust">built</span>
+            Things I've <span className="font-normal text-rust">built</span>
           </>
         }
       />

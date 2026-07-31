@@ -61,13 +61,13 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
       </motion.div>
 
       {/* Masthead rule + edition line */}
-      <motion.div 
+      {/* <motion.div 
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 1, ease: EASE, delay: 0.2 }}
         className="origin-left h-px bg-ink/25 mb-4"
-      /> 
-      <div className="flex items-center justify-between gap-4 mb-12 md:mb-16">
+      />  */}
+      {/* <div className="flex items-center justify-between gap-4 mb-12 md:mb-16">
         <motion.span
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -82,12 +82,9 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
         <span className="kicker hidden sm:inline">
           {PERSONAL_INFO.location} 
         </span>
-      </div>
+      </div> */}
 
-      <div className="relative grid lg:grid-cols-[1.35fr_0.65fr] gap-12 lg:gap-16 items-start">
-        {/* Faint modern guide grid behind the headline */}
-        <div className="hero-grid hidden md:block" />
-
+      <div className="relative grid lg:grid-cols-[1.35fr_0.65fr] gap-12 lg:gap-16 lg:items-center">
         {/* Headline column */}
         <div className="relative">
           {/* Shell-prompt tag — bridges the editorial headline with the
@@ -103,7 +100,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
             </span>
           </Reveal>
 
-          <h1 className="font-display font-medium text-ink leading-[0.92] tracking-tightest text-[3.6rem] sm:text-7xl md:text-[6.75rem]">
+          <h1 className="font-display font-medium text-ink leading-[1.02] tracking-tightest text-4xl sm:text-5xl md:text-6xl">
             <Reveal delay={0.2}>
               <span className="block">Building</span>
             </Reveal>
@@ -111,22 +108,7 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
               <span className="block">software that</span>
             </Reveal>
             <Reveal delay={0.44}>
-              <span className="relative inline-block italic font-normal text-rust">
-                scales quietly.
-                {/* Hand-drawn underline strokes itself in */}
-                <svg
-                  className="absolute left-0 -bottom-3 w-full"
-                  height="14"
-                  viewBox="0 0 340 14"
-                  preserveAspectRatio="none"
-                  aria-hidden
-                >
-                  <path
-                    className="underline-draw"
-                    d="M3 8 C 70 3, 150 12, 210 6 S 320 3, 337 7"
-                  />
-                </svg>
-              </span>
+              <span className="block font-normal text-rust">scales quietly.</span>
             </Reveal>
           </h1>
 
@@ -134,72 +116,12 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.7 }}
-            className="mt-10 max-w-xl text-lg md:text-xl text-ink-soft leading-relaxed"
+            className="mt-8 max-w-xl text-lg md:text-xl text-ink-soft leading-relaxed"
           >
             A full-stack engineer working close to the metal — event-driven
             systems, sharp backends, and interfaces built with the same care
             as a printed page.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, delay: 0.9 }}
-            className="mt-11 flex flex-wrap items-center gap-x-6 gap-y-4"
-          >
-            <a
-              href="#projects"
-              onClick={(e) => {
-                e.preventDefault();
-                document
-                  .getElementById("projects")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="btn-fill group inline-flex items-center gap-2 border border-ink px-7 py-3.5 text-ink hover:text-paper"
-            >
-              View selected work
-              <ArrowDownRight
-                size={18}
-                className="group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform"
-              />
-            </a>
-            <a
-              href="#console"
-              onClick={(e) => {
-                e.preventDefault();
-                document
-                  .getElementById("console")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="group inline-flex items-center gap-2 px-2 py-3.5 text-ink link-underline"
-            >
-              Try the console
-              <ArrowUpRight
-                size={18}
-                className="text-rust group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-              />
-            </a>
-          </motion.div>
-
-          {/* Socials */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, delay: 1 }}
-            className="mt-8 flex items-center gap-5"
-          >
-            {PERSONAL_INFO.socials.map((s) => (
-              <a
-                key={s.name}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link-underline meta uppercase text-ink-soft"
-              >
-                {s.name}
-              </a>
-            ))}
-          </motion.div>
         </div>
 
         {/* Fig. 01 — code specimen plate */}
@@ -218,6 +140,67 @@ const Hero: React.FC<HeroProps> = ({ heroRef }) => {
           </motion.figure>
         </Parallax>
       </div>
+
+      {/* CTAs + socials — full width, below the headline and figure */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.9, delay: 0.9 }}
+        className="mt-12 md:mt-16 flex flex-wrap items-center gap-x-6 gap-y-4"
+      >
+        <a
+          href="#projects"
+          onClick={(e) => {
+            e.preventDefault();
+            document
+              .getElementById("projects")
+              ?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="btn-fill group inline-flex items-center gap-2 border border-ink px-7 py-3.5 text-ink hover:text-paper"
+        >
+          View selected work
+          <ArrowDownRight
+            size={18}
+            className="group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform"
+          />
+        </a>
+        <a
+          href="#console"
+          onClick={(e) => {
+            e.preventDefault();
+            document
+              .getElementById("console")
+              ?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="group inline-flex items-center gap-2 px-2 py-3.5 text-ink link-underline"
+        >
+          Try the console
+          <ArrowUpRight
+            size={18}
+            className="text-rust group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+          />
+        </a>
+      </motion.div>
+
+      {/* Socials */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.9, delay: 1 }}
+        className="mt-8 flex items-center gap-5"
+      >
+        {PERSONAL_INFO.socials.map((s) => (
+          <a
+            key={s.name}
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-underline meta uppercase text-ink-soft"
+          >
+            {s.name}
+          </a>
+        ))}
+      </motion.div>
     </header>
   );
 };

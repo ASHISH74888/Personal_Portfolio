@@ -40,7 +40,7 @@ const About: React.FC = () => {
         kicker="About the engineer"
         title={
           <>
-            Beyond the <span className="italic font-normal text-rust">console</span>,
+            Beyond the <span className="font-normal text-rust">console</span>,
             <br className="hidden md:block" /> a way of working.
           </>
         }
@@ -50,7 +50,7 @@ const About: React.FC = () => {
         {/* Narrative */}
         <div className="max-w-xl">
           <FadeUp>
-            <p className="dropcap text-lg text-ink-soft leading-relaxed mb-6">
+            <p className="text-lg text-ink-soft leading-relaxed mb-6">
               My work has never been about syntax. It began with one question —
               how do we build systems that handle millions of requests without
               blinking? — and it turned into a craft: the architecture of
@@ -103,7 +103,7 @@ const About: React.FC = () => {
             {CAPABILITIES.map((c, i) => (
               <FadeUp key={c.no} delay={i * 0.08}>
                 <li className="group flex gap-6 py-6 border-b border-ink/15">
-                  <span className="folio text-3xl italic w-8 shrink-0 text-rust/70">
+                  <span className="folio text-3xl w-8 shrink-0 text-rust/70">
                     {c.no}
                   </span>
                   <div>

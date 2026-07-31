@@ -108,7 +108,7 @@ const Console: React.FC = () => {
             </div>
             <div>
               New here? Run <span className="text-rust">bigo</span> — I'll
-              interview <span className="italic text-paper">you</span> for a
+              interview <span className="text-paper">you</span> for a
               change.
             </div>
           </div>
@@ -467,7 +467,7 @@ const Console: React.FC = () => {
           transition={{ duration: 0.8, ease: EASE }}
           className="font-display text-4xl md:text-[3.4rem] leading-[1.02] font-medium text-paper mb-4"
         >
-          Now it's <span className="italic font-normal text-rust">my</span>{" "}
+          Now it's <span className="font-normal text-rust">my</span>{" "}
           turn to interview you.
         </motion.h2>
         <motion.p

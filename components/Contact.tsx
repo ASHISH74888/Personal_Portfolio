@@ -36,7 +36,7 @@ const Contact: React.FC = () => {
         kicker="Correspondence"
         title={
           <>
-            Let's <span className="italic font-normal text-rust">talk</span>.
+            Let's <span className="font-normal text-rust">talk</span>.
           </>
         }
       />

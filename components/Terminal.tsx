@@ -96,7 +96,7 @@ const Terminal: React.FC = () => {
           <div className="space-y-2 font-mono border-l-2 border-accent pl-4 py-2 bg-accent/5">
             <p className="text-white font-bold text-lg">{PERSONAL_INFO.name}</p>
             <p className="text-slate-300">{PERSONAL_INFO.summary}</p>
-            <p className="text-slate-500 italic text-xs">
+            <p className="text-slate-500 text-xs">
               Lat/Long: {PERSONAL_INFO.location}
             </p>
           </div>

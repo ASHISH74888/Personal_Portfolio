@@ -24,7 +24,7 @@ import {
 type Tok = { t: string; c?: string };
 const K = "text-rust"; // keyword
 const S = "text-olive"; // string
-const C = "text-paper/35 italic"; // comment
+const C = "text-paper/35"; // comment
 const F = "text-paper"; // emphasised identifier
 
 const LINES: Tok[][] = [
@@ -430,7 +430,7 @@ const CodePlate: React.FC = () => {
                       : d.k === "hunk"
                         ? "text-rust"
                         : d.k === "meta"
-                          ? "text-paper/35 italic"
+                          ? "text-paper/35"
                           : "text-paper/70";
                 const gutterCls =
                   d.k === "add"

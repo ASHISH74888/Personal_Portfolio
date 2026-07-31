@@ -87,7 +87,7 @@ const Skills: React.FC = () => {
           title={
             <>
               The technical{" "}
-              <span className="italic font-normal text-rust">arsenal</span>
+              <span className="font-normal text-rust">arsenal</span>
             </>
           }
         />
@@ -153,7 +153,7 @@ const Skills: React.FC = () => {
                     className="px-4 md:px-7 py-6 font-mono text-[11.5px] md:text-[13px] leading-[1.9]"
                   >
                     <Row n={1}>
-                      <span className="text-paper/35 italic">
+                      <span className="text-paper/35">
                         // the technical arsenal — chosen, not collected
                       </span>
                     </Row>
@@ -178,7 +178,7 @@ const Skills: React.FC = () => {
                           </React.Fragment>
                         ))}
                         <span className="text-paper/40">],</span>{"  "}
-                        <span className="text-paper/25 italic">
+                        <span className="text-paper/25">
                           {`// ${g.items.length}`}
                         </span>
                       </Row>

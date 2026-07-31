@@ -34,8 +34,7 @@ const App: React.FC = () => {
 
   return (
     <main className="relative min-h-screen bg-white text-ink selection:bg-ink selection:text-paper">
-      {/* Faint printer's texture + paper grain */}
-      <div className="paper-texture" />
+      {/* Paper grain */}
       <div className="paper-grain" />
 
       {/* Thin reading-progress rule (rust) */}
