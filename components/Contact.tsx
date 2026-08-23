@@ -4,14 +4,21 @@ import { PERSONAL_INFO } from "../constants";
 import { SectionHeading, FadeUp } from "./Editorial";
 import { Copy, Check, ArrowRight } from "lucide-react";
 
+type Status =
+  | { kind: "idle" }
+  | { kind: "sent" }
+  | { kind: "failed"; message: string };
+
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({
     name: "",
     email: "",
     message: "",
+    botcheck: "",
   });
   const [isCopied, setIsCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<Status>({ kind: "idle" });
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(PERSONAL_INFO.email);
@@ -19,14 +26,36 @@ const Contact: React.FC = () => {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      window.location.href = `mailto:${PERSONAL_INFO.email}?subject=Message from ${formState.name}&body=${formState.message}`;
+    setStatus({ kind: "idle" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok) {
+        setStatus({ kind: "sent" });
+        setFormState({ name: "", email: "", message: "", botcheck: "" });
+      } else {
+        setStatus({
+          kind: "failed",
+          message: data.error ?? "That didn't go through. Try again?",
+        });
+      }
+    } catch {
+      setStatus({
+        kind: "failed",
+        message: "Network trouble — the message never left.",
+      });
+    } finally {
       setIsSubmitting(false);
-      setFormState({ name: "", email: "", message: "" });
-    }, 800);
+    }
   };
 
   return (
@@ -167,19 +196,49 @@ const Contact: React.FC = () => {
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="group inline-flex w-full sm:w-auto sm:self-start items-center justify-center gap-2 border border-ink px-7 py-3.5 sm:py-3 text-ink hover:bg-ink hover:text-paper transition-colors duration-300 disabled:opacity-60"
-            >
-              {isSubmitting ? "Sending…" : "Send message"}
-              {!isSubmitting && (
-                <ArrowRight
-                  size={18}
-                  className="group-hover:translate-x-1 transition-transform"
-                />
+            {/* Honeypot: off-screen rather than `hidden`, so bots that skip
+                display:none fields still take the bait. Humans never see it. */}
+            <input
+              type="text"
+              name="botcheck"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={formState.botcheck}
+              onChange={(e) =>
+                setFormState({ ...formState, botcheck: e.target.value })
+              }
+              className="absolute -left-[9999px] h-0 w-0 opacity-0"
+            />
+
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-ink px-7 py-3.5 sm:py-3 text-ink hover:bg-ink hover:text-paper transition-colors duration-300 disabled:opacity-60"
+              >
+                {isSubmitting ? "Sending…" : "Send message"}
+                {!isSubmitting && (
+                  <ArrowRight
+                    size={18}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
+                )}
+              </button>
+
+              {status.kind !== "idle" && (
+                <p
+                  aria-live="polite"
+                  className={`meta ${
+                    status.kind === "failed" ? "text-rust" : "text-ink-soft"
+                  }`}
+                >
+                  {status.kind === "sent"
+                    ? "Sent — I'll be in touch shortly."
+                    : status.message}
+                </p>
               )}
-            </button>
+            </div>
           </form>
         </FadeUp>
       </div>

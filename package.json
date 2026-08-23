@@ -11,11 +11,13 @@
   "dependencies": {
     "framer-motion": "^12.27.5",
     "lucide-react": "^0.562.0",
+    "nodemailer": "^9.0.5",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.0.0",
